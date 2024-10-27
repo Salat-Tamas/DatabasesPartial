@@ -25,22 +25,22 @@
             [
                 'title' => 'County', 
                 'description' => 'All the end-of-year exams sorted into counties.',
-                'href' => 'counties'
+                'href' => '/counties'
             ],
             [
                 'title' => 'Nationality', 
                 'description' => 'All the end-of-year exams sorted by nationality.',
-                'href' => 'nationalities'
+                'href' => '/nationalities'
             ],
             [   
                 'title' => 'School', 
                 'description' => 'All the end-of-year exams sorted by schools.',
-                'href' => 'schools'
+                'href' => '/schools'
             ],
             [
                 'title' => 'Location', 
                 'description' => 'All the end-of-year exams sorted by location.',
-                'href' => 'locations'
+                'href' => '/locations'
             ],
         ];
 
@@ -55,7 +55,7 @@
     @endphp
 
     <!-- Target Section: Categories -->
-    <div id="categoriesSection" class="bg-gradient-to-b border-t-2 border-separate from-gray-100 to-cyan-100 relative min-h-screen py-16 bg-white flex flex-col space-y-20 items-center overflow-hidden">
+    <div id="categoriesSection" class="bg-gradient-to-b border-t-2 border-separate from-gray-100 to-green-200 relative min-h-screen py-16 flex flex-col space-y-20 items-center overflow-hidden">
         <!-- Blob Background Component -->
         <x-blob-gif-background :gifs="$blobGifs"/>
 
@@ -64,7 +64,7 @@
 
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 z-10">
             @foreach ($categories as $category)
-                <x-card class="opacity-100" :title="$category['title']" :description="$category['description']" :href="$category['href']"/>
+                <x-card :title="$category['title']" :description="$category['description']" :href="'/categories' . $category['href']"/>
             @endforeach
         </div>
     </div>
