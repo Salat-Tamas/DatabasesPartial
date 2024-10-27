@@ -10,4 +10,9 @@ class SiteController extends Controller
     {
         return view('index');
     }
+
+    public function category($category)
+    {
+        return view('categories.' . $category, compact('category'));
+    }
 }
