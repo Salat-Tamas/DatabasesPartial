@@ -17,5 +17,45 @@
     <footer class="border-t border-black/20 bg-gray-800 text-white p-4 text-center">
         @include('partials.footer')
     </footer>
+
+    <!-- Jump to Top Button -->
+    <button id="scrollToTopBtn" 
+            class="backdrop-filter backdrop-blur-md bg-opacity-30 fixed bottom-5 right-5 border-2 hover:bg-opacity-30 hover:backgrdrop-blur hover:backdrop-blur-md border-black hover:bg-gray-300 bg-green-600 text-white p-3 rounded-full w-12 md:w-16 shadow-2xl hidden transition duration-300">
+        <img src="{{ asset('svgs/jump-gray.svg') }}" alt="Jump to Top" id="topIcon" />
+        <img src="{{ asset('svgs/jump-dark-green.svg') }}" class="hidden"  alt="Jump to Top" id="topIconHover" />
+    </button>
+
+    <script>
+        // Get the button and SVG elements
+        const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        const topIcon = document.getElementById('topIcon');
+        const topIconHover = document.getElementById('topIconHover');
+
+        // Show button when scrolled down 100px
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollToTopBtn.classList.remove('hidden');
+            } else {
+                scrollToTopBtn.classList.add('hidden');
+            }
+        };
+
+        // Change SVG on hover
+        scrollToTopBtn.addEventListener('mouseenter', () => {
+            topIcon.classList.add('hidden');     // Hide default icon
+            topIconHover.classList.remove('hidden'); // Show hover icon
+        });
+
+        scrollToTopBtn.addEventListener('mouseleave', () => {
+            topIcon.classList.remove('hidden'); // Show default icon
+            topIconHover.classList.add('hidden');   // Hide hover icon
+        });
+
+        // Scroll to top when button is clicked
+        scrollToTopBtn.onclick = function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+    </script>
+
 </body>
 </html>
