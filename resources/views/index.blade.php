@@ -23,22 +23,22 @@
     @php
         $categories = [
             [
-                'title' => 'County', 
+                'title' => 'County',
                 'description' => 'All the end-of-year exams sorted into counties.',
                 'href' => '/counties'
             ],
             [
-                'title' => 'Nationality', 
+                'title' => 'Nationality',
                 'description' => 'All the end-of-year exams sorted by nationality.',
                 'href' => '/nationalities'
             ],
-            [   
-                'title' => 'School', 
+            [
+                'title' => 'School',
                 'description' => 'All the end-of-year exams sorted by schools.',
                 'href' => '/schools'
             ],
             [
-                'title' => 'Location', 
+                'title' => 'Location',
                 'description' => 'All the end-of-year exams sorted by location.',
                 'href' => '/locations'
             ],
@@ -59,13 +59,15 @@
         <!-- Blob Background Component -->
         <x-blob-gif-background :gifs="$blobGifs"/>
 
-        <!-- Category Heading and Cards -->
-        <h2 class="text-6xl font-bold z-10">Categories</h2>
+        <div class="flex flex-col space-y-20 z-10 items-center">
+            <!-- Category Heading and Cards -->
+            <h2 class="text-6xl font-bold z-10">Categories</h2>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 z-10">
-            @foreach ($categories as $category)
-                <x-card :title="$category['title']" :description="$category['description']" :href="'/categories' . $category['href']"/>
-            @endforeach
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 z-10">
+                @foreach ($categories as $category)
+                    <x-card :title="$category['title']" :description="$category['description']" :href="'/categories' . $category['href']"/>
+                @endforeach
+            </div>
         </div>
     </div>
 
@@ -77,8 +79,8 @@
 
         // Randomize blob positions
         document.querySelectorAll('.blob-gif').forEach(blob => {
-            const randomX = Math.random() * 85; // Random percentage from 0% to 90%
-            const randomY = Math.random() * 85; // Random percentage from 0% to 90%
+            const randomX = Math.random() * 85; // Random percentage from 0% to 85%
+            const randomY = Math.random() * 85; // Random percentage from 0% to 85%
             blob.style.left = `${randomX}vw`; // Use vw for responsive positioning
             blob.style.top = `${randomY}vh`; // Use vh for responsive positioning
         });

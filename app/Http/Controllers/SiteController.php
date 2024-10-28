@@ -36,17 +36,17 @@ class SiteController extends Controller
     {
         // Map the category name to the actual attribute
         $attribute = $this->mapCategoryToAttribute($category);
-    
+
         // Ensure the attribute is valid
         if (!$attribute) {
             abort(404); // If the mapping fails, return a 404
         }
-    
+
         // Fetch students based on the mapped attribute and the subcategory value
         $students = ExamStudent::where($attribute, $subcategory)->get();
-    
+
         // No students found, but do not abort. Instead, pass an empty collection.
-        return view("categories.$category.show", [
+        return view("categories.show", [
             'category' => $category,
             'subcategory' => $subcategory,
             'students' => $students // This could be an empty collection, but won't abort.

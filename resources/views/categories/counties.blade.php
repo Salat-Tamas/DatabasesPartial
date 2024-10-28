@@ -3,7 +3,7 @@
 @section('content')
 
 @php
-use App\Models\ExamStudent; 
+use App\Models\ExamStudent;
 
 $counties = ExamStudent::select('county')->distinct()->get();
 @endphp
@@ -16,7 +16,7 @@ $counties = ExamStudent::select('county')->distinct()->get();
 
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 z-10 w-4/6">
         @foreach ($counties as $county)
-            <x-card :title="$county->county" :href="url()->current() . '/' . lcfirst($county->county)"/>
+            <x-card :title="$county->county" :href="url()->current() . '/' . $county->county"/>
         @endforeach
     </div>
 </div>
