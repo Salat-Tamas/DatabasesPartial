@@ -14,7 +14,7 @@
                 <p class="text-lg text-black/45">{{ $student->location }}</p>
             </div>
 
-            <div>
+            <div class="hidden md:block">
                 <table class="w-full border-collapse border border-black/45 text-center">
                     <tr>
                         <th class="border border-black/45 p-2" colspan="2">Grades</th>

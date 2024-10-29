@@ -5,7 +5,11 @@
 @php
 use App\Models\ExamStudent;
 
-$schools = ExamStudent::select('schoolName')->distinct()->orderBy('shortSchoolName')->get();
+$schools = ExamStudent::select('schoolName')
+    ->selectRaw('AVG(avg) as average_avg, COUNT(*) as student_count')
+    ->groupBy('shortSchoolName')
+    ->orderByRaw('average_avg * student_count DESC')
+    ->get();
 @endphp
 
 <!-- Target Section: Categories -->

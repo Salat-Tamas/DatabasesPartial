@@ -11,6 +11,15 @@
                 <h1 class="text-8xl font-serif font-bold text-green-800 outline-4 outline-gray-600">EduGraph</h1>
             </div>
 
+            <form method="POST" action="{{ route('students.result') }}" class="w-full text-center">
+                @csrf
+                <input
+                    name="search"
+                    type="text"
+                    class="w-2/3 px-2 hover:scale-110 py-4 bg-gray-200 text-gray-800 rounded-lg text-xl font-semibold shadow-xl focus:outline-none focus:ring-2 focus:ring-green-800 focus:ring-opacity-50 transition duration-200"
+                    placeholder="Search for a student..." />
+            </form>
+
             <button
                 id="scrollButton"
                 class="px-8 py-4 bg-green-800 text-white rounded-lg text-xl font-semibold shadow-lg hover:bg-green-600 hover:border-2 hover:border-gray-800 transition duration-200 max-w-56"
@@ -24,22 +33,22 @@
         $categories = [
             [
                 'title' => 'County',
-                'description' => 'All the end-of-year exams sorted into counties.',
+                'description' => 'All the end-of-year exams filtered by counties.',
                 'href' => '/counties'
             ],
             [
                 'title' => 'Nationality',
-                'description' => 'All the end-of-year exams sorted by nationality.',
+                'description' => 'All the end-of-year exams filtered by nationality.',
                 'href' => '/nationalities'
             ],
             [
                 'title' => 'School',
-                'description' => 'All the end-of-year exams sorted by schools.',
+                'description' => 'All the end-of-year exams filtered by schools.',
                 'href' => '/schools'
             ],
             [
                 'title' => 'Location',
-                'description' => 'All the end-of-year exams sorted by location.',
+                'description' => 'All the end-of-year exams filtered by location.',
                 'href' => '/locations'
             ],
         ];

@@ -5,7 +5,11 @@
 @php
 use App\Models\ExamStudent;
 
-$nationalities = ExamStudent::select('nationality')->distinct()->get();
+$nationalities = ExamStudent::select('nationality')
+    ->selectRaw('AVG(avg) as average_avg, COUNT(*) as student_count')
+    ->groupBy('nationality')
+    ->orderByRaw('average_avg * student_count DESC')
+    ->get();
 @endphp
 
 <!-- Target Section: Categories -->

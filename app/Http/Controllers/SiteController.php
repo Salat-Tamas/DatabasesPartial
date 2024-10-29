@@ -43,7 +43,7 @@ class SiteController extends Controller
         }
 
         // Fetch students based on the mapped attribute and the subcategory value
-        $students = ExamStudent::where($attribute, $subcategory)->get();
+        $students = ExamStudent::where($attribute, $subcategory)->orderByDesc('avg')->get();
 
         // No students found, but do not abort. Instead, pass an empty collection.
         return view("categories.show", [
@@ -68,51 +68,13 @@ class SiteController extends Controller
     }
 
     // Updated filterStudents function to handle both attribute filters and request filters
-    public function filterStudents($attribute = null, $value = null, Request $request = null)
+    public function filterStudents($attribute, $value)
     {
         $students = ExamStudent::query();
 
         // Apply main filter based on attribute and subcategory value
         if ($attribute && $value) {
             return $students->where($attribute, '=', $value);
-        }
-
-        // Additional filters based on request parameters (for search bar or extra filters)
-        if ($request->has('location')) {
-            $students->where('location', 'like', '%' . $request->location . '%');
-        }
-
-        if ($request->has('county')) {
-            $students->where('county', 'like', '%' . $request->county . '%');
-        }
-
-        if ($request->has('nationality')) {
-            $students->where('nationality', 'like', '%' . $request->nationality . '%');
-        }
-
-        if ($request->has('schoolType')) {
-            $students->where('schoolType', 'like', '%' . $request->schoolType . '%');
-        }
-
-        if ($request->has('schoolName')) {
-            $students->where('schoolName', 'like', '%' . $request->schoolName . '%')
-                     ->orWhere('shortSchoolName', 'like', '%' . $request->schoolName . '%');
-        }
-
-        if ($request->has('schoolCode')) {
-            $students->where('schoolCode', 'like', '%' . $request->schoolCode . '%');
-        }
-
-        if ($request->has('name')) {
-            $students->where('name', 'like', '%' . $request->name . '%');
-        }
-
-        if ($request->has('medium')) {
-            $students->where('medium', 'like', '%' . $request->medium . '%');
-        }
-
-        if ($request->has('native')) {
-            $students->where('native', 'like', '%' . $request->native . '%');
         }
 
         return $students;

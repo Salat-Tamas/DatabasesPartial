@@ -14,4 +14,5 @@ Route::group(['prefix' => 'categories', 'as' => 'categories.'], function () {
 
 Route::group(['prefix' => 'students', 'as' => 'students.'], function () {
     Route::get('/{student}', [StudentController::class, 'show'])->name('showStudent');
+    Route::post('/result', [StudentController::class, 'result'])->name('result');
 });

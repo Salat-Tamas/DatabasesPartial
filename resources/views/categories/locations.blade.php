@@ -3,9 +3,13 @@
 @section('content')
 
 @php
-use App\Models\ExamStudent; 
+use App\Models\ExamStudent;
 
-$locations = ExamStudent::select('location')->distinct()->orderBy('location')->get();
+$locations = ExamStudent::select('location')
+    ->selectRaw('AVG(avg) as average_avg, COUNT(*) as student_count')
+    ->groupBy('location')
+    ->orderByRaw('average_avg * student_count DESC')
+    ->get();
 @endphp
 
 <!-- Target Section: Categories -->

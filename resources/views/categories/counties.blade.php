@@ -5,7 +5,11 @@
 @php
 use App\Models\ExamStudent;
 
-$counties = ExamStudent::select('county')->distinct()->get();
+$counties = ExamStudent::select('county')
+    ->selectRaw('AVG(avg) as average_avg')
+    ->groupBy('county')
+    ->orderBy('average_avg', 'desc')
+    ->get();
 @endphp
 
 <!-- Target Section: Categories -->
