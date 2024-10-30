@@ -1,66 +1,130 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+  <img src="public/images/edugraph_banner.png" alt="Edugraph Banner" width="70%">
+</div>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Edugraph
+This project is based on the database of 2021-2022 end-of-year exam results for the 8th grade students of Romania.
+It helps users to visualize the data in a more interactive way, by providing a graphical representation of the data,
+and also by providing a search functionality to find the results of a specific student, school, location, etc.
 
-## About Laravel
+## Setting up the database
+* First of all, we used an sqlite database to store the data, so the following specifications work better if
+you also do the same, but overall the steps are identical.
+<br><br>
+First, assuming you are already in possession of an sqlite database,
+you need to install Laravel Herd, which is a package that
+contains nginx for serving the database and php for running the Laravel application.
+<br><br>
+After installing Laravel Herd, you need to ``cd`` to its directory and run the following command:
+```bash
+larvel new <<project_name>>
+```
+* This will create a new Laravel project in the directory you are currently in.
+<br><br>
+<strong>Important:</strong> You need to be in the directory of Laravel Herd when running this command,
+otherwise it won't work because the Laravel Herd directory is the one that contains the nginx and php services.
+<br><br>
+After running the command, it will ask you some questions,
+like if you want to install the Laravel UI package, whether you would like to initiate a git repository,
+what kind of database you want to use (here, select sqlite - if working with sqlite database), etc.
+<br><br>
+If you have successfully created the Laravel project, you can now copy the database file to 
+the database directory of the Laravel project.
+```directory
+/database/database.sqlite (in our case it is named partial.db, db is also
+a valid extension for sqlite databases)
+```
+* After copying the database you will need to set up a connection to the database in the `.env` file,
+if you do not have one, you can create one or modify the `.env.example` file, which
+has some preset values.
+```env
+DB_CONNECTION=sqlite
+DB_DATABASE=/database/database.sqlite
+DB_USERNAME=root (if you have a username)
+DB_PASSWORD= (if you have a password, otherwise leave it empty)
+```
+* Once you have set up the connection to the database, you can now run the following command to run any migrations:
+```bash
+php artisan migrate '(use --force if you are trying to run the migrations in production)'
+```
+* After running the migrations, you can now create a model for the database table you want to interact with.
+```bash
+php artisan make:model <<ModelName>>
+```
+* In the _ModelName.php_ file, you can specify the table name, primary key, 
+fillable and guarded properties.
+```php
+protected $table = 'table_name';
+protected $primaryKey = 'id'; - (default is 'id', but you can change it to any other column)
+protected $fillable = ['column1', 'column2', 'column3']; - (columns that can be mass assigned)
+protected $guarded = ['column1', 'column2', 'column3']; - (columns that cannot be mass assigned)
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Setting up a database manager
+* After setting up the database, you can now install a database manager to interact with the database.
+In our case, we used TablePlus, but you can use any other database manager you are comfortable with.
+```bash
+sudo apt-get install tableplus
+```
+* After installing TablePlus, you can now connect to the database by creating a new connection,
+by click on the plus icon on the left of the search bar (on windows) or by clicking on the `Add Connection` button (on mac),
+specifying the database type (in our case sqlite).
+* After creating a new connection, you can now specify the connection details:
+  * Name: `<<ConnectionName>>`
+  * Status Color:
+  * Tag:
+  * SQLite File: `<<PathToDatabaseFile>>`
+* After specifying the connection details, test the connection, if it fails, check the above steps to see if you have missed anything.
+* If the test is successful, you can now connect to the database and start manipulating the data.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Manipulating the database
+* After creating the model, you can now create a controller for the model.
+  Where you can specify any relations with other models/tables, or any other logic you want to implement.
+```bash
+php artisan make:controller <<ControllerName>>
+```
+* In the _ControllerName.php_ file, you can specify the model you want to use in the controller.
+```php
+use App\Models\ModelName;
+```
+* After specifying the model, you can now create the methods you want to use in the controller
+to manipulate the data in the connected database table.
+```php
+public function index() {
+    return <<ModelName>>::all(); # returns all the records in the table
+}
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+public function show($id) {
+    return <<ModelName>>::find($id); # returns the record with the specified id
+}
 
-## Learning Laravel
+public function store(Request $request) {
+    return <<ModelName>>::create($request->all()); # creates a new record in the table
+}
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+public function update(Request $request, $id) {
+    $record = <<ModelName>>::find($id);
+    $record->update($request->all()); # updates the record with the specified id
+    return $record;
+}
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+public function destroy($id) {
+    return <<ModelName>>::destroy($id); # deletes the record with the specified id
+}
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+public function search($query) {
+    return <<ModelName>>::where('column', 'like', '%'.$query.'%')->get(); # searches for records with the specified query
+}
+```
+* After creating the methods, you can now create the routes for the controller
+in the `routes/web.php` file.
+```php
+Route::get('/<<route_name>>', '<<ControllerName>>@index');
+Route::get('/<<route_name>>/{id}', '<<ControllerName>>@show');
+Route::post('/<<route_name>>', '<<ControllerName>>@store');
+Route::put('/<<route_name>>/{id}', '<<ControllerName>>@update');
+Route::delete('/<<route_name>>/{id}', '<<ControllerName>>@destroy');
+Route::get('/<<route_name>>/search/{query}', '<<ControllerName>>@search');
+```
+* After creating the routes, you can create views and other controllers to
+interact with the data in your browser at the `<<ProjectName>>.test` URL.
