@@ -31,7 +31,7 @@ return [
 
     'connections' => [
 
-        'old_db' => [
+        'sqlite' => [
             'driver' => 'sqlite',
             'url' => env('DB_URL'),
             'database' => database_path('partial.db'),
