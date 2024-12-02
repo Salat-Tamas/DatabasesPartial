@@ -1,0 +1,22 @@
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>School Name</th>
+                    <th>School Short Name</th>
+                    <th>School Code</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($students as $student)
+                    <tr>
+                        <td>{{ $student->name }}</td>
+                        <td>{{ $student->schoolName }}</td>
+                        <td>{{ $student->schoolShortName }}</td>
+                        <td>{{ $student->schoolCode }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
